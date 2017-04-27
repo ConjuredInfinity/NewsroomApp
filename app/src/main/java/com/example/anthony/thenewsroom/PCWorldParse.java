@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -18,13 +19,14 @@ import java.util.List;
 
 public class PCWorldParse {
 
-    public static List getPCWorldNews() {
+    public static HashMap<String, String> getPCWorldNews() {
 
-        List headlines = new ArrayList();
-        List links = new ArrayList();
+        List<String> headlines = new ArrayList();
+        List<String> links = new ArrayList();
+        HashMap<String, String> stories = new HashMap<String, String>();
 
         try {
-            URL url = new URL("http://feeds.pcworld.com/pcworld/latestnews");
+            URL url = new URL(RssFeedUrls.PCWorld);
 
 
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
@@ -63,6 +65,9 @@ public class PCWorldParse {
             e.printStackTrace();
         }
         Log.i("error boi","ran "+headlines.size());
-        return headlines;
+        for(int i = 0; i < headlines.size(); i++) {
+            stories.put(headlines.get(i),links.get(i));
+        }
+        return stories;
     }
 }
