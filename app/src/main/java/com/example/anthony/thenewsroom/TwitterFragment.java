@@ -11,7 +11,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.anthony.thenewsroom.model.RssItem;
+import com.example.anthony.thenewsroom.model.RssSource;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
@@ -80,7 +80,7 @@ public class TwitterFragment extends Fragment {
 
                 // generate the twitter rss url and create the rss item
                 String twitterUrl = "https://twitrss.me/twitter_search_to_rss/?term=" + term;
-                RssItem rss = new RssItem(name, twitterUrl);
+                RssSource rss = new RssSource(name, twitterUrl);
 
                 // create the intent with the new rss feed
                 Intent intent = new Intent();

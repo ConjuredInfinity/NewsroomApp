@@ -9,13 +9,13 @@ import io.realm.RealmObject;
  * Created by cameronjackson on 5/1/17.
  */
 
-public class RssItem extends RealmObject implements Serializable {
+public class RssSource extends RealmObject implements Serializable {
 
     private String name;
     private String rssUrl;
     private Date created;
 
-    public RssItem(String name, String rss) {
+    public RssSource(String name, String rss) {
         super();
 
         this.name = name;
