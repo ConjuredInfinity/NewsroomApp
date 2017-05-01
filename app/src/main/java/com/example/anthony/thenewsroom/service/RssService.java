@@ -1,6 +1,6 @@
 package com.example.anthony.thenewsroom.service;
 
-import com.example.anthony.thenewsroom.model.RssItem;
+import com.example.anthony.thenewsroom.model.RssSource;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ public class RssService {
      * Adds a new rss item to the db
      * @param rss
      */
-    public static void AddRss(RssItem rss) {
+    public static void AddRss(RssSource rss) {
         Realm realm = Realm.getDefaultInstance();
 
         // begin the write block
@@ -33,7 +33,7 @@ public class RssService {
      */
     public static void RemoveRss(String rssUrl) {
         Realm realm = Realm.getDefaultInstance();
-        RssItem rssItem = realm.where(RssItem.class).equalTo("rssUrl", rssUrl).findFirst();
+        RssSource rssItem = realm.where(RssSource.class).equalTo("rssUrl", rssUrl).findFirst();
 
         // this rss feed does not exists in the db
         if (rssItem == null)
@@ -48,9 +48,9 @@ public class RssService {
      * Gets all of the rss items from the db
      * @return
      */
-    public static List<RssItem> getRssItems() {
+    public static List<RssSource> getRssItems() {
         Realm realm = Realm.getDefaultInstance();
-        RealmResults<RssItem> results = realm.where(RssItem.class).findAll();
+        RealmResults<RssSource> results = realm.where(RssSource.class).findAll();
         return realm.copyFromRealm(results);
     }
 
