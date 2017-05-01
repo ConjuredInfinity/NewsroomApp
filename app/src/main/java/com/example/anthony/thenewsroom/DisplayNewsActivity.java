@@ -34,7 +34,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
     private final int TWITTER_CODE = 829;
 
     public static ListView listView;
-    private List headlines;
+    public static List headlines;
     private List links;
 
     private ArrayAdapter adapter;
@@ -64,7 +64,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
         adapter = new ArrayAdapter(this,
                 android.R.layout.simple_list_item_1, headlines);
 
-        ListView listView = (ListView) findViewById(R.id.list);
+        listView = (ListView) findViewById(R.id.list);
 
         //adapter for the links, could be used to create an in app browser
         listView.setAdapter(adapter);
