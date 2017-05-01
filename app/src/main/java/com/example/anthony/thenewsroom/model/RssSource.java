@@ -15,6 +15,10 @@ public class RssSource extends RealmObject implements Serializable {
     private String rssUrl;
     private Date created;
 
+
+    /// Default construct that does nothing
+    public RssSource() {}
+
     public RssSource(String name, String rss) {
         super();
 
