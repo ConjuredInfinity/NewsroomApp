@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/add_twitter_rss"
+        android:id="@+id/menu_add_twitter"
         android:icon="@android:drawable/ic_dialog_info"
         android:title="@string/twitter_menu"
         />
