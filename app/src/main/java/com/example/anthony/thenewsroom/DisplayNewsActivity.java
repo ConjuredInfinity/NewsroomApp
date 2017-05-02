@@ -31,9 +31,9 @@ import java.util.Set;
 public class DisplayNewsActivity extends AppCompatActivity {
 
     private final String TAG = getClass().getSimpleName();
-    private final int TWITTER_CODE = 829;
+    private final int RSS_CODE = 829;
 
-    public ListView listView;
+    public static ListView listView;
     public static List headlines;
     private List links;
 
@@ -96,8 +96,12 @@ public class DisplayNewsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_add_twitter:
-                Intent twitterIntent = new Intent(this, TwitterActivity.class);
-                startActivityForResult(twitterIntent, TWITTER_CODE);
+                Intent twitterIntent = RssActivity.newIntent(DisplayNewsActivity.this, RssType.TWITTER);
+                startActivityForResult(twitterIntent, RSS_CODE);
+                return true;
+            case R.id.menu_add_rss:
+                Intent rssIntent = RssActivity.newIntent(DisplayNewsActivity.this, RssType.URL);
+                startActivityForResult(rssIntent, RSS_CODE);
                 return true;
             case R.id.menu_item_options:
                 startActivity(new Intent(this, Options.class));
@@ -111,7 +115,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (resultCode == RESULT_OK && requestCode == TWITTER_CODE) {
+        if (resultCode == RESULT_OK && requestCode == RSS_CODE) {
             // save added rss feed
             RssSource source = (RssSource) data.getSerializableExtra(RssSource.RSS_CREATED);
             RssService.AddRss(source);

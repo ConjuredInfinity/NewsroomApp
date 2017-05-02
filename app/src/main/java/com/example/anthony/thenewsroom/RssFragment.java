@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.anthony.thenewsroom.model.RssSource;
@@ -16,7 +17,7 @@ import com.example.anthony.thenewsroom.model.RssSource;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class TwitterFragment extends Fragment {
+public class RssFragment extends Fragment {
 
 
     private Button mSaveButton;
@@ -24,14 +25,18 @@ public class TwitterFragment extends Fragment {
 
     private EditText mNameTextView;
     private EditText mTermTextView;
+    private TextView mUrlTextView;
+
+    private RssType rssType;
 
 
-    public TwitterFragment() {
+    public RssFragment() {
         // do nothing
     }
 
-    public static TwitterFragment newInstance() {
-        TwitterFragment fragment = new TwitterFragment();
+    public static RssFragment newInstance(RssType type) {
+        RssFragment fragment = new RssFragment();
+        fragment.rssType = type;
         return fragment;
     }
 
@@ -39,13 +44,22 @@ public class TwitterFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_twitter, container, false);
+        View view = inflater.inflate(R.layout.fragment_rss, container, false);
 
         mSaveButton = (Button) view.findViewById(R.id.save_button);
         mCancelButton = (Button) view.findViewById(R.id.cancel_button);
 
         mNameTextView = (EditText) view.findViewById(R.id.rss_name);
         mTermTextView = (EditText) view.findViewById(R.id.twitter_term);
+        mUrlTextView = (TextView) view.findViewById(R.id.rss_url_textview);
+
+        // configure the hint text
+        if (rssType == RssType.TWITTER) {
+            mTermTextView.setHint(getActivity().getResources().getString(R.string.twitter_term_placeholder));
+        } else {
+            mTermTextView.setHint(getActivity().getResources().getString(R.string.rss_term_placeholder));
+            mUrlTextView.setText("URL:");
+        }
 
         // add click listeners
         mCancelButton.setOnClickListener(new View.OnClickListener() {
@@ -63,7 +77,7 @@ public class TwitterFragment extends Fragment {
                 String name = mNameTextView.getText().toString();
                 if (name.trim().isEmpty()) {
                     // name cannot be empty
-                    Toast.makeText(TwitterFragment.this.getContext(), "Name cannot be empty",
+                    Toast.makeText(RssFragment.this.getContext(), "Name cannot be empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -71,15 +85,20 @@ public class TwitterFragment extends Fragment {
                 String term = mTermTextView.getText().toString();
                 if (term.trim().isEmpty()) {
                     // term cannot be empty
-                    Toast.makeText(TwitterFragment.this.getContext(), "Name cannot be empty",
+                    Toast.makeText(RssFragment.this.getContext(), "Name cannot be empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
 
 
                 // generate the twitter rss url and create the rss item
-                String twitterUrl = "https://twitrss.me/twitter_search_to_rss/?term=" + term;
-                RssSource rss = new RssSource(name, twitterUrl);
+                String url = "";
+                if (rssType == RssType.TWITTER) {
+                    url = "https://twitrss.me/twitter_search_to_rss/?term=" + term;
+                } else {
+                    url = term;
+                }
+                RssSource rss = new RssSource(name, url);
 
                 // create the intent with the new rss feed
                 Intent intent = new Intent();
