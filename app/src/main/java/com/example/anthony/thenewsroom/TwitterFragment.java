@@ -1,9 +1,9 @@
 package com.example.anthony.thenewsroom;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,7 +18,6 @@ import static android.app.Activity.RESULT_OK;
 
 public class TwitterFragment extends Fragment {
 
-    public static final String TWITTER_RSS_CREATED = "twitterRssCreated";
 
     private Button mSaveButton;
     private Button mCancelButton;
@@ -84,7 +83,7 @@ public class TwitterFragment extends Fragment {
 
                 // create the intent with the new rss feed
                 Intent intent = new Intent();
-                intent.putExtra(TWITTER_RSS_CREATED, rss);
+                intent.putExtra(RssSource.RSS_CREATED, rss);
 
                 // end this activity with the OK result
                 getActivity().setResult(RESULT_OK, intent);

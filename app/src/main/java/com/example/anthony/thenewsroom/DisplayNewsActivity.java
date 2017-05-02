@@ -3,7 +3,6 @@ package com.example.anthony.thenewsroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.BitmapFactory;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -12,7 +11,6 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -22,6 +20,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.example.anthony.thenewsroom.model.RssSource;
+import com.example.anthony.thenewsroom.service.RssService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,7 +33,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private final int TWITTER_CODE = 829;
 
-    public static ListView listView;
+    public ListView listView;
     public static List headlines;
     private List links;
 
@@ -106,6 +106,16 @@ public class DisplayNewsActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (resultCode == RESULT_OK && requestCode == TWITTER_CODE) {
+            // save added rss feed
+            RssSource source = (RssSource) data.getSerializableExtra(RssSource.RSS_CREATED);
+            RssService.AddRss(source);
+        }
     }
 
     public class FetchNewsAsyncTask extends AsyncTask<Void,Void,HashMap<String, String>> {
