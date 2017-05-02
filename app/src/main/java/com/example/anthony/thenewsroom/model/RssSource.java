@@ -11,6 +11,8 @@ import io.realm.RealmObject;
 
 public class RssSource extends RealmObject implements Serializable {
 
+    public static final String RSS_CREATED = "twitterRssCreated";
+
     private String name;
     private String rssUrl;
     private Date created;

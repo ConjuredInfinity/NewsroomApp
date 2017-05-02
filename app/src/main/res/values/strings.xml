@@ -1,9 +1,11 @@
 <resources>
     <string name="app_name">TheNewsroom</string>
     <string name="twitter_menu">Add Twitter Rss</string>
+    <string name="rss_menu">Add Rss from URL</string>
     <string name="rss_name_label">RSS Feed Name:</string>
     <string name="twitter_term_label">Twitter Term:</string>
     <string name="twitter_term_placeholder">#, handle, or any term</string>
+    <string name="rss_term_placeholder">Enter url of Rss feed</string>
     <string name="rss_name_placeholder">Name of the rss feed</string>
     <string name="rss_save">Save</string>
     <string name="rss_cancel">Cancel</string>
