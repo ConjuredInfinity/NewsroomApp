@@ -51,10 +51,15 @@ public class DisplayNewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_news);
+        Realm.init(getApplicationContext());
+
         
         sharedPref = getSharedPreferences("com.example.anthony.thenewsroom", MODE_PRIVATE);
         headlines = new ArrayList();
         links = new ArrayList();
+        
+//        RssService.AddRss(RssFeedUrls.cnn);
+//        RssService.AddRss(RssFeedUrls.pcworld);
 
         //async task to collect all news
         FetchNewsAsyncTask task = new FetchNewsAsyncTask();
