@@ -110,6 +110,9 @@ public class DisplayNewsActivity extends AppCompatActivity {
                 Intent rssIntent = RssActivity.newIntent(DisplayNewsActivity.this, RssType.URL);
                 startActivityForResult(rssIntent, RSS_CODE);
                 return true;
+            case R.id.menu_remove_rss:
+                startActivity(new Intent(this, RemoveRss.class));
+                return true;
             case R.id.menu_item_options:
                 startActivity(new Intent(this, Options.class));
                 return true;
