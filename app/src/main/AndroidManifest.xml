@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".RssActivity" />
-        <activity android:name=".Remove" />
+        <activity android:name=".RemoveRss" />
         <activity android:name=".Options" />
 
     </application>
