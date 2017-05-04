@@ -2,6 +2,7 @@ package com.example.anthony.thenewsroom;
 
 import android.util.Log;
 
+import com.example.anthony.thenewsroom.model.NewsItem;
 import com.example.anthony.thenewsroom.model.RssSource;
 import com.example.anthony.thenewsroom.service.RssService;
 
@@ -23,12 +24,15 @@ import io.realm.internal.Context;
  * Created by Anthony on 4/11/2017.
  */
 
-public class PCWorldParse {
+public class RssParser {
 
-    public static HashMap<String, String> getPCWorldNews() {
-        List<String> headlines = new ArrayList();
-        List<String> links = new ArrayList();
-        HashMap<String, String> stories = new HashMap<String, String>();
+    public static List<NewsItem> fetchRssFeeds() {
+        List<String> headlines = new ArrayList<>();
+        List<String> links = new ArrayList<>();
+        List<NewsItem> stories = new ArrayList<>();
+
+
+        // the feeds to fetch
         List<RssSource> rssFeeds;
 
         rssFeeds = RssService.getRssItems();
@@ -74,7 +78,8 @@ public class PCWorldParse {
             }
             Log.i("error boi", "ran " + headlines.size());
             for (int j = 0; j < headlines.size(); j++) {
-                stories.put(headlines.get(j), links.get(j));
+                NewsItem item = new NewsItem(headlines.get(j), links.get(j));
+                stories.add(item);
             }
         }
         return stories;

@@ -3,6 +3,12 @@ package com.example.anthony.thenewsroom;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 /**
  * Created by cameronjackson on 5/1/17.
@@ -11,6 +17,11 @@ import android.support.v4.app.Fragment;
 public class RssActivity extends SingleFragmentActivity {
 
     private static String RSS_CREATE_TYPE = "rssCreateType";
+
+    private Spinner spinner;
+
+    private ArrayAdapter<String> adapter;
+
 
     @Override
     protected Fragment createFragment() {
@@ -26,4 +37,17 @@ public class RssActivity extends SingleFragmentActivity {
         return storyIntent;
     }
 
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        MenuInflater menuInflater = getMenuInflater();
+//        menuInflater.inflate(R.menu.add_menu, menu);
+//
+//        MenuItem item = menu.findItem(R.id.spinner);
+//        spinner = (Spinner) MenuItemCompat.getActionView(item);
+//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.add_entries));
+//        spinner.setAdapter(adapter);
+//
+//
+//        return true;
+//    }
 }

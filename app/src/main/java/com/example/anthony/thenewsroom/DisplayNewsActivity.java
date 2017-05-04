@@ -3,30 +3,32 @@ package com.example.anthony.thenewsroom;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
+import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.example.anthony.thenewsroom.model.NewsItem;
 import com.example.anthony.thenewsroom.model.RssSource;
 import com.example.anthony.thenewsroom.service.RssService;
+import com.example.anthony.thenewsroom.viewholder.NewsItemViewHolder;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+
 import io.realm.Realm;
 
 
@@ -35,11 +37,11 @@ public class DisplayNewsActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private final int RSS_CODE = 829;
 
-    public static ListView listView;
-    public static List headlines;
-    private List links;
+    public RecyclerView recyclerView;
 
-    private ArrayAdapter adapter;
+    private Boolean nightModeEnabled;
+
+    private NewsAdapter adapter;
     private FetchNewsAsyncTask task;
     private SensorManager sensorManager;
     private SharedPreferences sharedPref;
@@ -55,11 +57,33 @@ public class DisplayNewsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_display_news);
         Realm.init(getApplicationContext());
 
-        
+
+        adapter = new NewsAdapter();
+        recyclerView = (RecyclerView) findViewById(R.id.news_list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setAdapter(adapter);
+
         sharedPref = getSharedPreferences("com.example.anthony.thenewsroom", MODE_PRIVATE);
-        headlines = new ArrayList();
-        links = new ArrayList();
-        
+
+        // set and check night mode
+        nightModeEnabled = sharedPref.getBoolean("Nightmode", false);
+        if (nightModeEnabled) recyclerView.setBackgroundColor(Color.BLACK);
+
+        sharedPref.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("Nightmode")) {
+                    // toggle nightmode
+                    nightModeEnabled = sharedPref.getBoolean("Nightmode", false);
+                    if (nightModeEnabled) { recyclerView.setBackgroundColor(Color.BLACK); } else { recyclerView.setBackgroundColor(Color.WHITE); }
+                    adapter.notifyDataSetChanged();
+                }
+            }
+        });
+
+
+
+
 //        RssService.AddRss(RssFeedUrls.cnn);
 //        RssService.AddRss(RssFeedUrls.pcworld);
 
@@ -68,27 +92,28 @@ public class DisplayNewsActivity extends AppCompatActivity {
         task.execute();
 
 
-        adapter = new ArrayAdapter(this,
-                android.R.layout.simple_list_item_1, headlines);
-
-        listView = (ListView) findViewById(R.id.list);
-
-        //adapter for the links, could be used to create an in app browser
-        listView.setAdapter(adapter);
-        adapter.notifyDataSetChanged();
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Uri uri = Uri.parse(links.get(position).toString());
-                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                startActivity(intent);
-            }
-        });
+//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Uri uri = Uri.parse(links.get(position).toString());
+//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+//                startActivity(intent);
+//            }
+//        });
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         accel = 0.00f;
         accelCurrent = SensorManager.GRAVITY_EARTH;
         accelLast = SensorManager.GRAVITY_EARTH;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // set and check night mode
+        nightModeEnabled = sharedPref.getBoolean("Nightmode", false);
+        if (nightModeEnabled) recyclerView.setBackgroundColor(Color.BLACK);
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -132,19 +157,55 @@ public class DisplayNewsActivity extends AppCompatActivity {
         }
     }
 
-    public class FetchNewsAsyncTask extends AsyncTask<Void,Void,HashMap<String, String>> {
-        protected HashMap<String, String> doInBackground(Void ... params) {
-            HashMap<String, String> things = PCWorldParse.getPCWorldNews();
-            return things;
+    private class NewsAdapter extends RecyclerView.Adapter<NewsItemViewHolder> {
+
+        private List<NewsItem> newsItems;
+
+        NewsAdapter() {
+            newsItems = new ArrayList<>();
         }
 
-        protected void onPostExecute(HashMap<String,String> things) {
-            Set<String> keys = things.keySet();
-            for(String s : keys) {
-                headlines.add(s);
-                links.add(things.get(s));
-            }
-            adapter.notifyDataSetChanged();
+        void setItems(List<NewsItem> items) {
+            newsItems.clear();
+            newsItems.addAll(items);
+            notifyDataSetChanged();
+        }
+
+
+        @Override
+        public NewsItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
+            // handle making the night mode cell
+            int resourceId = viewType == 22 ? R.layout.news_item : R.layout.news_item_night;
+
+            LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+            View view = layoutInflater.inflate(resourceId, parent, false);
+            return new NewsItemViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(NewsItemViewHolder holder, int position) {
+            holder.bindItem(newsItems.get(position));
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return !nightModeEnabled ? 22 : 23;
+        }
+
+        @Override
+        public int getItemCount() {
+            return newsItems.size();
+        }
+    }
+
+    private class FetchNewsAsyncTask extends AsyncTask<Void,Void,List<NewsItem>> {
+        protected List<NewsItem> doInBackground(Void ... params) {
+            return RssParser.fetchRssFeeds();
+        }
+
+        protected void onPostExecute(List<NewsItem> things) {
+            DisplayNewsActivity.this.adapter.setItems(things);
         }
     }
      private final SensorEventListener sensorListener = new SensorEventListener() {
