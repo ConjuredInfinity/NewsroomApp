@@ -8,6 +8,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -180,6 +181,15 @@ public class DisplayNewsActivity extends AppCompatActivity {
 
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
             View view = layoutInflater.inflate(resourceId, parent, false);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = recyclerView.getChildAdapterPosition(v);
+                    Uri uri = Uri.parse(newsItems.get(position).getLink());
+                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    startActivity(intent);
+                }
+            });
             return new NewsItemViewHolder(view);
         }
 
@@ -208,7 +218,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
             DisplayNewsActivity.this.adapter.setItems(things);
         }
     }
-     private final SensorEventListener sensorListener = new SensorEventListener() {
+    private final SensorEventListener sensorListener = new SensorEventListener() {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
