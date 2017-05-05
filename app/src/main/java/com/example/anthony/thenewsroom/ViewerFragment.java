@@ -1,12 +1,15 @@
 package com.example.anthony.thenewsroom;
 
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,6 +18,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+
+import com.example.anthony.thenewsroom.model.NewsItem;
 
 /**
  * Created by cameronjackson on 5/5/17.
@@ -26,16 +31,16 @@ public class ViewerFragment extends Fragment {
     private WebView webview;
     private ProgressDialog progressBar;
 
-    private String urlString;
+    private NewsItem newsItem;
 
 
-    public static ViewerFragment newInstance(String url) {
+    public static ViewerFragment newInstance(NewsItem item) {
 
         Bundle args = new Bundle();
 
         ViewerFragment fragment = new ViewerFragment();
         fragment.setArguments(args);
-        fragment.urlString = url;
+        fragment.newsItem = item;
         return fragment;
     }
 
@@ -66,7 +71,7 @@ public class ViewerFragment extends Fragment {
                 progressBar = ProgressDialog.show(getActivity(), null, "Loading...");
             }
         });
-        webview.loadUrl(urlString);
+        webview.loadUrl(newsItem.getLink());
 
 
         return view;
@@ -83,12 +88,47 @@ public class ViewerFragment extends Fragment {
 
         switch (item.getItemId()) {
             case R.id.open_item:
-                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(newsItem.getLink()));
                 startActivity(browserIntent);
                 return true;
+            case R.id.tldr_item:
+                progressBar = ProgressDialog.show(getActivity(), null, "Loading...");
+                new FetchTLDRTask().execute();
+
             default:
                 return false;
         }
 
+    }
+
+    private class FetchTLDRTask extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... params) {
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            if (progressBar.isShowing())
+                progressBar.dismiss();
+
+
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("TLDR")
+                    .setMessage("Are you sure you want to delete this entry?")
+                    .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // continue with delete
+                        }
+                    })
+                    .setIcon(android.R.drawable.ic_dialog_alert)
+                    .show();
+        }
     }
 }

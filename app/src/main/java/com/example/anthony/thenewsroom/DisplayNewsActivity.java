@@ -170,9 +170,10 @@ public class DisplayNewsActivity extends AppCompatActivity {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // get the selected News Item
                     int position = recyclerView.getChildAdapterPosition(v);
-                    String url = newsItems.get(position).getLink();
-                    Intent viewerIntent = ViewerActivity.newIntent(DisplayNewsActivity.this, url);
+                    NewsItem item = newsItems.get(position);
+                    Intent viewerIntent = ViewerActivity.newIntent(DisplayNewsActivity.this, item);
                     startActivity(viewerIntent);
                 }
             });
