@@ -11,6 +11,7 @@
     <string name="rss_cancel">Cancel</string>
     <string name="tldr">TLDR</string>
     <string name="share">SHARE</string>
+    <string name="open">Open in Browser</string>
 
     <string-array name="add_entries">
         <item>Add URL</item>

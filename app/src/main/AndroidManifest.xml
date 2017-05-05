@@ -20,6 +20,7 @@
         <activity android:name=".RssActivity" />
         <activity android:name=".RemoveRss" />
         <activity android:name=".Options" />
+        <activity android:name=".ViewerActivity" />
 
     </application>
 

@@ -37,11 +37,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <Button
-                    android:layout_width="57dp"
-                    android:layout_height="25dp"
-                    android:background="@null"
-                    android:text="@string/tldr"/>
+                <!--<Button-->
+                    <!--android:layout_width="57dp"-->
+                    <!--android:layout_height="25dp"-->
+                    <!--android:background="@null"-->
+                    <!--android:text="@string/tldr"/>-->
 
                 <View
                     android:layout_width="0dp"

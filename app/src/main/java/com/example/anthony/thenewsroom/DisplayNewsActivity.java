@@ -83,24 +83,10 @@ public class DisplayNewsActivity extends AppCompatActivity {
         });
 
 
-
-
-//        RssService.AddRss(RssFeedUrls.cnn);
-//        RssService.AddRss(RssFeedUrls.pcworld);
-
         //async task to collect all news
         FetchNewsAsyncTask task = new FetchNewsAsyncTask();
         task.execute();
 
-
-//        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                Uri uri = Uri.parse(links.get(position).toString());
-//                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-//                startActivity(intent);
-//            }
-//        });
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
         accel = 0.00f;
@@ -185,9 +171,9 @@ public class DisplayNewsActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View v) {
                     int position = recyclerView.getChildAdapterPosition(v);
-                    Uri uri = Uri.parse(newsItems.get(position).getLink());
-                    Intent intent = new Intent(Intent.ACTION_VIEW, uri);
-                    startActivity(intent);
+                    String url = newsItems.get(position).getLink();
+                    Intent viewerIntent = ViewerActivity.newIntent(DisplayNewsActivity.this, url);
+                    startActivity(viewerIntent);
                 }
             });
             return new NewsItemViewHolder(view);
