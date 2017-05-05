@@ -13,11 +13,52 @@
         android:layout_margin="10dp"
         card_view:cardCornerRadius="4dp">
 
-        <TextView
-            android:id="@+id/info_text"
-            android:layout_margin="5dp"
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/info_text"
+                style="@style/RssTitle"
+                android:layout_margin="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorPrimary"/>
+
+            <LinearLayout
+                android:padding="3dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:layout_width="57dp"
+                    android:layout_height="25dp"
+                    android:background="@null"
+                    android:text="@string/tldr"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="match_parent" />
+
+                <Button
+                    android:layout_width="57dp"
+                    android:layout_height="25dp"
+                    android:background="@null"
+                    android:text="@string/share"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
 
     </android.support.v7.widget.CardView>
 

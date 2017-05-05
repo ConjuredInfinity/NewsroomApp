@@ -9,6 +9,8 @@
     <string name="rss_name_placeholder">Name of the rss feed</string>
     <string name="rss_save">Save</string>
     <string name="rss_cancel">Cancel</string>
+    <string name="tldr">TLDR</string>
+    <string name="share">SHARE</string>
 
     <string-array name="add_entries">
         <item>Add URL</item>
