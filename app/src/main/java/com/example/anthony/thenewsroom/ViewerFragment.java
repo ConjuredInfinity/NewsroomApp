@@ -21,6 +21,15 @@ import android.webkit.WebViewClient;
 
 import com.example.anthony.thenewsroom.model.NewsItem;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 /**
  * Created by cameronjackson on 5/5/17.
  */
@@ -93,7 +102,7 @@ public class ViewerFragment extends Fragment {
                 return true;
             case R.id.tldr_item:
                 progressBar = ProgressDialog.show(getActivity(), null, "Loading...");
-                new FetchTLDRTask().execute();
+                new FetchTLDRTask().execute(newsItem.getLink());
 
             default:
                 return false;
@@ -101,23 +110,74 @@ public class ViewerFragment extends Fragment {
 
     }
 
-    private class FetchTLDRTask extends AsyncTask<Void, Void, String> {
+    private class FetchTLDRTask extends AsyncTask<String, Void, String> {
 
         @Override
-        protected String doInBackground(Void... params) {
+        protected String doInBackground(String... params) {
+
+            String jsonString = "";
+            HttpURLConnection connection = null;
+
+
+
             try {
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
+                String urlString = Uri.parse("https://rss-cmsc436-backend.herokuapp.com/tldr")
+                        .buildUpon().appendQueryParameter("url", params[0])
+                        .build().toString();
+
+                URL url = new URL(urlString);
+                connection = (HttpURLConnection) url.openConnection();
+
+                InputStream inputStream = connection.getInputStream();
+
+                ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                int bytesRead = 0;
+                byte[] buffer = new byte[1024];
+
+                while ((bytesRead = inputStream.read(buffer)) > 0) {
+                    outputStream.write(buffer, 0, bytesRead);
+                }
+
+                outputStream.close();
+
+                jsonString = new String(outputStream.toByteArray());
+
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } finally {
+                if (connection != null) { connection.disconnect(); };
+            }
+
+            JSONObject jObject = null;
+            try {
+                jObject = new JSONObject(jsonString);
+            } catch (JSONException e) {
                 e.printStackTrace();
             }
-            return null;
+
+            String tldr = null;
+            try {
+                if (jObject != null) {
+                    tldr = jObject.getString("sm_api_content");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+            return tldr;
         }
+
 
         @Override
         protected void onPostExecute(String s) {
             if (progressBar.isShowing())
                 progressBar.dismiss();
 
+            if (s == null) {
+                return;
+            }
 
             new AlertDialog.Builder(getActivity())
                     .setTitle("TLDR")
