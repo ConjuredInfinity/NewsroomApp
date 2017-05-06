@@ -181,7 +181,7 @@ public class ViewerFragment extends Fragment {
 
             new AlertDialog.Builder(getActivity())
                     .setTitle("TLDR")
-                    .setMessage("Are you sure you want to delete this entry?")
+                    .setMessage(s)
                     .setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // continue with delete
