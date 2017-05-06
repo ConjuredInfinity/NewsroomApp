@@ -17,9 +17,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".RssActivity" />
-        <activity android:name=".RemoveRss" />
-        <activity android:name=".Options" />
+        <activity android:name=".AddRssActivity" />
+        <activity android:name=".RemoveRssActivity" />
+        <activity android:name=".SettingsActivity" />
         <activity android:name=".ViewerActivity" />
 
     </application>

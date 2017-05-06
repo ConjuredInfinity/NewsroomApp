@@ -24,9 +24,9 @@ import io.realm.internal.Context;
  * Created by Anthony on 4/11/2017.
  */
 
-public class RssParser {
+class RssParser {
 
-    public static List<NewsItem> fetchRssFeeds() {
+    static List<NewsItem> fetchRssFeeds() {
         List<String> headlines = new ArrayList<>();
         List<String> links = new ArrayList<>();
         List<NewsItem> stories = new ArrayList<>();
@@ -69,11 +69,7 @@ public class RssParser {
                     eventType = xpp.next();
                 }
 
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (XmlPullParserException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
+            } catch (XmlPullParserException | IOException e) {
                 e.printStackTrace();
             }
             Log.i("error boi", "ran " + headlines.size());

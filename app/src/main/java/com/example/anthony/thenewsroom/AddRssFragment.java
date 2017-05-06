@@ -17,7 +17,7 @@ import com.example.anthony.thenewsroom.model.RssSource;
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
 
-public class RssFragment extends Fragment {
+public class AddRssFragment extends Fragment {
 
 
     private Button mSaveButton;
@@ -30,12 +30,12 @@ public class RssFragment extends Fragment {
     private RssType rssType;
 
 
-    public RssFragment() {
+    public AddRssFragment() {
         // do nothing
     }
 
-    public static RssFragment newInstance(RssType type) {
-        RssFragment fragment = new RssFragment();
+    public static AddRssFragment newInstance(RssType type) {
+        AddRssFragment fragment = new AddRssFragment();
         fragment.rssType = type;
         return fragment;
     }
@@ -77,7 +77,7 @@ public class RssFragment extends Fragment {
                 String name = mNameTextView.getText().toString();
                 if (name.trim().isEmpty()) {
                     // name cannot be empty
-                    Toast.makeText(RssFragment.this.getContext(), "Name cannot be empty",
+                    Toast.makeText(AddRssFragment.this.getContext(), "Name cannot be empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -85,7 +85,7 @@ public class RssFragment extends Fragment {
                 String term = mTermTextView.getText().toString();
                 if (term.trim().isEmpty()) {
                     // term cannot be empty
-                    Toast.makeText(RssFragment.this.getContext(), "Name cannot be empty",
+                    Toast.makeText(AddRssFragment.this.getContext(), "Name cannot be empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }

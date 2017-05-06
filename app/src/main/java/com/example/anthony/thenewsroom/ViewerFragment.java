@@ -30,9 +30,6 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-/**
- * Created by cameronjackson on 5/5/17.
- */
 
 public class ViewerFragment extends Fragment {
 
@@ -103,7 +100,7 @@ public class ViewerFragment extends Fragment {
             case R.id.tldr_item:
                 progressBar = ProgressDialog.show(getActivity(), null, "Loading...");
                 new FetchTLDRTask().execute(newsItem.getLink());
-
+                return true;
             default:
                 return false;
         }

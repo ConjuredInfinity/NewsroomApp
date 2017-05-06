@@ -1,37 +1,31 @@
 package com.example.anthony.thenewsroom;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import java.util.ArrayList;
-import java.util.Hashtable;
-import java.util.List;
-
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.AdapterView.OnItemClickListener;
 
 import com.example.anthony.thenewsroom.model.RssSource;
 import com.example.anthony.thenewsroom.service.RssService;
 
-/**
- * Created by rusty on 5/3/2017.
- */
+import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.List;
 
-public class RemoveRss extends AppCompatActivity {
+
+public class RemoveRssActivity extends AppCompatActivity {
     MyCustomAdapter dataAdapter = null;
     final Hashtable checked = new Hashtable();
 

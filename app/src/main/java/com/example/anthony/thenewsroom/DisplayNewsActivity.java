@@ -8,7 +8,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -115,18 +114,18 @@ public class DisplayNewsActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.menu_add_twitter:
-                Intent twitterIntent = RssActivity.newIntent(DisplayNewsActivity.this, RssType.TWITTER);
+                Intent twitterIntent = AddRssActivity.newIntent(DisplayNewsActivity.this, RssType.TWITTER);
                 startActivityForResult(twitterIntent, RSS_CODE);
                 return true;
             case R.id.menu_add_rss:
-                Intent rssIntent = RssActivity.newIntent(DisplayNewsActivity.this, RssType.URL);
+                Intent rssIntent = AddRssActivity.newIntent(DisplayNewsActivity.this, RssType.URL);
                 startActivityForResult(rssIntent, RSS_CODE);
                 return true;
             case R.id.menu_remove_rss:
-                startActivity(new Intent(this, RemoveRss.class));
+                startActivity(new Intent(this, RemoveRssActivity.class));
                 return true;
             case R.id.menu_item_options:
-                startActivity(new Intent(this, Options.class));
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

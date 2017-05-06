@@ -4,7 +4,7 @@
 
     <item
         android:id="@+id/menu_add_twitter"
-        android:icon="@android:drawable/ic_dialog_info"
+        android:icon="@drawable/ic_social_twitter"
         android:title="@string/twitter_menu"
         />
     <item
@@ -14,14 +14,15 @@
         />
     <item
         android:id="@+id/menu_remove_rss"
-        android:icon="@android:drawable/ic_delete"
-        android:title="Remove Rss feed"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit_feed"
         app:showAsAction="always"
         />
+
     <item
-            android:id="@+id/menu_item_options"
-            android:icon="@android:drawable/ic_menu_info_details"
-            android:title="Options"
-            app:showAsAction="always" />
+        android:id="@+id/menu_item_options"
+        android:icon="@drawable/ic_wrench"
+        android:title="@string/settings"
+        app:showAsAction="always" />
 
 </menu>

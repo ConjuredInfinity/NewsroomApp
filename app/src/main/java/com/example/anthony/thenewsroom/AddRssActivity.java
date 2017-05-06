@@ -10,11 +10,8 @@ import android.view.MenuItem;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
-/**
- * Created by cameronjackson on 5/1/17.
- */
 
-public class RssActivity extends SingleFragmentActivity {
+public class AddRssActivity extends SingleFragmentActivity {
 
     private static String RSS_CREATE_TYPE = "rssCreateType";
 
@@ -27,27 +24,27 @@ public class RssActivity extends SingleFragmentActivity {
     protected Fragment createFragment() {
         Intent rssIntent = getIntent();
         RssType rssType = (RssType) rssIntent.getSerializableExtra(RSS_CREATE_TYPE);
-        return RssFragment.newInstance(rssType);
+        return AddRssFragment.newInstance(rssType);
     }
 
 
     public static Intent newIntent(Context ctx, RssType rssType) {
-        Intent storyIntent = new Intent(ctx, RssActivity.class);
+        Intent storyIntent = new Intent(ctx, AddRssActivity.class);
         storyIntent.putExtra(RSS_CREATE_TYPE, rssType);
         return storyIntent;
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        MenuInflater menuInflater = getMenuInflater();
-//        menuInflater.inflate(R.menu.add_menu, menu);
-//
-//        MenuItem item = menu.findItem(R.id.spinner);
-//        spinner = (Spinner) MenuItemCompat.getActionView(item);
-//        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.add_entries));
-//        spinner.setAdapter(adapter);
-//
-//
-//        return true;
-//    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.add_menu, menu);
+
+        MenuItem item = menu.findItem(R.id.spinner);
+        spinner = (Spinner) MenuItemCompat.getActionView(item);
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.add_entries));
+        spinner.setAdapter(adapter);
+
+
+        return true;
+    }
 }

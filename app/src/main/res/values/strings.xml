@@ -12,6 +12,8 @@
     <string name="tldr">TLDR</string>
     <string name="share">SHARE</string>
     <string name="open">Open in Browser</string>
+    <string name="settings">Settings</string>
+    <string name="edit_feed">Edit RSS feeds</string>
 
     <string-array name="add_entries">
         <item>Add URL</item>
