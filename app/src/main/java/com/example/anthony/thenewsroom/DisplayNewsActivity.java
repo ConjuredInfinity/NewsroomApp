@@ -19,6 +19,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.anthony.thenewsroom.model.NewsItem;
@@ -161,7 +162,7 @@ public class DisplayNewsActivity extends AppCompatActivity {
             int resourceId = viewType == 22 ? R.layout.news_item : R.layout.news_item_night;
 
             LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
-            View view = layoutInflater.inflate(resourceId, parent, false);
+            final View view = layoutInflater.inflate(resourceId, parent, false);
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -172,6 +173,19 @@ public class DisplayNewsActivity extends AppCompatActivity {
                     startActivity(viewerIntent);
                 }
             });
+
+            Button shareButton = (Button) view.findViewById(R.id.share);
+            shareButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = recyclerView.getChildAdapterPosition(view);
+                    Intent shareIntent = new Intent(Intent.ACTION_SEND);
+                    shareIntent.setType("text/plain");
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, newsItems.get(position).getLink());
+                    startActivity(Intent.createChooser(shareIntent, "Share link using"));
+                }
+            });
+
             return new NewsItemViewHolder(view);
         }
 
