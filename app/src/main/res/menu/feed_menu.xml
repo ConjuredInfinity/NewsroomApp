@@ -3,14 +3,10 @@
           xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/menu_add_twitter"
-        android:icon="@drawable/ic_social_twitter"
-        android:title="@string/twitter_menu"
-        />
-    <item
         android:id="@+id/menu_add_rss"
-        android:icon="@android:drawable/ic_input_add"
+        android:icon="@drawable/ic_plus"
         android:title="@string/rss_menu"
+        app:showAsAction="ifRoom"
         />
     <item
         android:id="@+id/menu_remove_rss"

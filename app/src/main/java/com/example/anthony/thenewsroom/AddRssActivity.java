@@ -7,6 +7,8 @@ import android.support.v4.view.MenuItemCompat;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -41,8 +43,32 @@ public class AddRssActivity extends SingleFragmentActivity {
 
         MenuItem item = menu.findItem(R.id.spinner);
         spinner = (Spinner) MenuItemCompat.getActionView(item);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.add_entries));
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, getResources().getStringArray(R.array.add_entries));
         spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                Fragment fragment = null;
+                RssType rssType;
+                if (position == 0) {
+                    rssType = RssType.URL;
+                } else {
+                    rssType = RssType.TWITTER;
+                }
+
+                fragment = AddRssFragment.newInstance(rssType);
+                getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, fragment)
+                        .commit();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
 
         return true;

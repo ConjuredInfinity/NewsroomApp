@@ -113,10 +113,6 @@ public class DisplayNewsActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         switch (item.getItemId()) {
-            case R.id.menu_add_twitter:
-                Intent twitterIntent = AddRssActivity.newIntent(DisplayNewsActivity.this, RssType.TWITTER);
-                startActivityForResult(twitterIntent, RSS_CODE);
-                return true;
             case R.id.menu_add_rss:
                 Intent rssIntent = AddRssActivity.newIntent(DisplayNewsActivity.this, RssType.URL);
                 startActivityForResult(rssIntent, RSS_CODE);
