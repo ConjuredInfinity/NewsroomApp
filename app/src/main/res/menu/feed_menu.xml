@@ -10,7 +10,7 @@
         />
     <item
         android:id="@+id/menu_remove_rss"
-        android:icon="@drawable/ic_edit"
+        android:icon="@drawable/ic_trash_a"
         android:title="@string/edit_feed"
         app:showAsAction="always"
         />
