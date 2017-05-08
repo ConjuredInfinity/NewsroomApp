@@ -13,9 +13,14 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 
 import io.realm.Realm;
 import io.realm.internal.Context;
@@ -29,7 +34,12 @@ class RssParser {
     static List<NewsItem> fetchRssFeeds() {
         List<String> headlines = new ArrayList<>();
         List<String> links = new ArrayList<>();
+        List<Date> dates = new ArrayList<>();
+
         List<NewsItem> stories = new ArrayList<>();
+
+        DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
+
 
 
         // the feeds to fetch
@@ -61,6 +71,10 @@ class RssParser {
                         } else if (xpp.getName().equalsIgnoreCase("link")) {
                             if (insideItem)
                                 links.add(xpp.nextText());
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                            if(insideItem)
+                                dates.add(formatter.parse(xpp.nextText()));
+
                         }
                     } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
                         insideItem = false;
@@ -69,12 +83,12 @@ class RssParser {
                     eventType = xpp.next();
                 }
 
-            } catch (XmlPullParserException | IOException e) {
+            } catch (XmlPullParserException | IOException | ParseException e) {
                 e.printStackTrace();
             }
             Log.i("error boi", "ran " + headlines.size());
             for (int j = 0; j < headlines.size(); j++) {
-                NewsItem item = new NewsItem(headlines.get(j), links.get(j));
+                NewsItem item = new NewsItem(headlines.get(j), links.get(j), dates.get(j));
                 stories.add(item);
             }
         }
