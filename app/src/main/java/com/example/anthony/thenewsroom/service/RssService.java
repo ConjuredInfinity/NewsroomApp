@@ -20,6 +20,7 @@ public class RssService {
      */
     public static void AddRss(RssSource rss) {
         Realm realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
 
         // begin the write block
         realm.beginTransaction();
@@ -34,6 +35,7 @@ public class RssService {
      */
     public static void RemoveRss(String rssUrl) {
         Realm realm = Realm.getDefaultInstance();
+        realm.setAutoRefresh(true);
 
         RssSource rssItem = realm.where(RssSource.class).equalTo("rssUrl", rssUrl).findFirst();
 
@@ -55,7 +57,9 @@ public class RssService {
         Realm realm = Realm.getDefaultInstance();
 
         RealmResults<RssSource> results = realm.where(RssSource.class).findAll();
-        return realm.copyFromRealm(results);
+        List<RssSource> sources = realm.copyFromRealm(results);
+        realm.close();
+        return sources;
     }
 
 }
