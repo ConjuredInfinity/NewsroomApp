@@ -10,6 +10,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,6 +29,8 @@ import com.example.anthony.thenewsroom.service.RssService;
 import com.example.anthony.thenewsroom.viewholder.NewsItemViewHolder;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import io.realm.Realm;
@@ -39,12 +42,14 @@ public class DisplayNewsActivity extends AppCompatActivity {
     private final String TAG = getClass().getSimpleName();
     private final int RSS_CODE = 829;
 
-    public RecyclerView recyclerView;
+    private RecyclerView recyclerView;
+    private SwipeRefreshLayout refreshLayout;
+
+    private FetchNewsAsyncTask currentTask;
 
     private Boolean nightModeEnabled;
 
     private NewsAdapter adapter;
-    private FetchNewsAsyncTask task;
     private SensorManager sensorManager;
     private SharedPreferences sharedPref;
     private float accel; // acceleration apart from gravity
@@ -62,6 +67,15 @@ public class DisplayNewsActivity extends AppCompatActivity {
         RealmConfiguration config = new RealmConfiguration.Builder().build();
         Realm.setDefaultConfiguration(config);
 
+
+        refreshLayout = (SwipeRefreshLayout) findViewById(R.id.swipeRefreshLayout);
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                currentTask = new FetchNewsAsyncTask();
+                currentTask.execute();
+            }
+        });
 
         adapter = new NewsAdapter();
         recyclerView = (RecyclerView) findViewById(R.id.news_list);
@@ -88,8 +102,8 @@ public class DisplayNewsActivity extends AppCompatActivity {
 
 
         //async task to collect all news
-        FetchNewsAsyncTask task = new FetchNewsAsyncTask();
-        task.execute();
+        currentTask = new FetchNewsAsyncTask();
+        currentTask.execute();
 
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         sensorManager.registerListener(sensorListener, sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
@@ -215,6 +229,14 @@ public class DisplayNewsActivity extends AppCompatActivity {
         }
 
         protected void onPostExecute(List<NewsItem> things) {
+            refreshLayout.setRefreshing(false); // disable the refreshing animation
+            Collections.sort(things, new Comparator<NewsItem>() {
+                @Override
+                public int compare(NewsItem o1, NewsItem o2) {
+                    return o2.getPubDate().compareTo(o1.getPubDate());
+                }
+            });
+
             DisplayNewsActivity.this.adapter.setItems(things);
         }
     }
@@ -233,8 +255,8 @@ public class DisplayNewsActivity extends AppCompatActivity {
                 if (accel > 12) {
                     Toast toast = Toast.makeText(getApplicationContext(), "Device has shaken.", Toast.LENGTH_SHORT);
                     toast.show();
-                    task = new FetchNewsAsyncTask();
-                    task.execute();
+                    currentTask = new FetchNewsAsyncTask();
+                    currentTask.execute();
                     toast = Toast.makeText(getApplicationContext(), "Task has been executed", Toast.LENGTH_SHORT);
                     toast.show();
 
