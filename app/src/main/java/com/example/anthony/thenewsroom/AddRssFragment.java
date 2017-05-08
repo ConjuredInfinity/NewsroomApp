@@ -92,9 +92,9 @@ public class AddRssFragment extends Fragment {
 
 
                 // generate the twitter rss url and create the rss item
-                String url = "";
+                String url;
                 if (rssType == RssType.TWITTER) {
-                    url = "https://twitrss.me/twitter_search_to_rss/?term=" + term;
+                    url = "https://queryfeed.net/twitter?q=" + term + "&title-type=tweet-text-full&geocode=&omit-direct=on&omit-retweets=on&attach=on";
                 } else {
                     url = term;
                 }
