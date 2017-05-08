@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 
 public class DisplayNewsActivity extends AppCompatActivity {
@@ -56,7 +57,10 @@ public class DisplayNewsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_display_news);
-        Realm.init(getApplicationContext());
+
+        Realm.init(this);
+        RealmConfiguration config = new RealmConfiguration.Builder().build();
+        Realm.setDefaultConfiguration(config);
 
 
         adapter = new NewsAdapter();

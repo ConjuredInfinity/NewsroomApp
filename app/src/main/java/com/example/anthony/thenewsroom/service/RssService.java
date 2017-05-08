@@ -25,6 +25,7 @@ public class RssService {
         realm.beginTransaction();
         realm.copyToRealm(rss);
         realm.commitTransaction();
+        realm.close();
     }
 
     /**
@@ -33,6 +34,7 @@ public class RssService {
      */
     public static void RemoveRss(String rssUrl) {
         Realm realm = Realm.getDefaultInstance();
+
         RssSource rssItem = realm.where(RssSource.class).equalTo("rssUrl", rssUrl).findFirst();
 
         // this rss feed does not exists in the db
@@ -42,6 +44,7 @@ public class RssService {
         realm.beginTransaction();
         rssItem.deleteFromRealm();
         realm.commitTransaction();
+        realm.close();
     }
 
     /**
@@ -50,6 +53,7 @@ public class RssService {
      */
     public static List<RssSource> getRssItems() {
         Realm realm = Realm.getDefaultInstance();
+
         RealmResults<RssSource> results = realm.where(RssSource.class).findAll();
         return realm.copyFromRealm(results);
     }
