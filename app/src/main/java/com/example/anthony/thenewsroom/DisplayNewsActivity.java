@@ -87,6 +87,8 @@ public class DisplayNewsActivity extends AppCompatActivity {
         // set and check night mode
         nightModeEnabled = sharedPref.getBoolean("Nightmode", false);
         if (nightModeEnabled) recyclerView.setBackgroundColor(Color.BLACK);
+        else recyclerView.setBackgroundColor(Color.WHITE);
+
 
         sharedPref.registerOnSharedPreferenceChangeListener(new SharedPreferences.OnSharedPreferenceChangeListener() {
             @Override
@@ -118,6 +120,8 @@ public class DisplayNewsActivity extends AppCompatActivity {
         // set and check night mode
         nightModeEnabled = sharedPref.getBoolean("Nightmode", false);
         if (nightModeEnabled) recyclerView.setBackgroundColor(Color.BLACK);
+        else recyclerView.setBackgroundColor(Color.WHITE);
+
         adapter.notifyDataSetChanged();
     }
 
