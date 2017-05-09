@@ -1,7 +1,9 @@
 package com.example.anthony.thenewsroom;
 
 import com.example.anthony.thenewsroom.model.RssSource;
-import com.example.anthony.thenewsroom.service.RssService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * This class is where we will put all the urls for the RSS feeds we are using
@@ -21,4 +23,22 @@ public class RssFeedUrls {
     public static final RssSource nyt = new RssSource("NYT", "http://rss.nytimes.com/services/xml/rss/nyt/Books.xml");
     public static final RssSource entrepreneur = new RssSource("Entrepreneur", "http://feeds.feedburner.com/entrepreneur/latest");
     public static final RssSource variety = new RssSource("Variety", "http://variety.com/static-pages/rss-2/");
+
+    public static List<RssSource> getDefaultFeeds() {
+        List<RssSource> feeds = new ArrayList<RssSource>();
+        feeds.add(pcworld);
+        feeds.add(aljazeera);
+        feeds.add(et);
+        feeds.add(cnn);
+        feeds.add(thr);
+        feeds.add(bloomberg);
+        feeds.add(espn);
+        feeds.add(nfl);
+        feeds.add(yahooS);
+        feeds.add(gizmodo);
+        feeds.add(nyt);
+        feeds.add(entrepreneur);
+        feeds.add(variety);
+        return feeds;
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.anthony.thenewsroom.service;
 
+import com.example.anthony.thenewsroom.RssFeedUrls;
 import com.example.anthony.thenewsroom.model.RssSource;
 
 import java.util.List;
@@ -58,6 +59,17 @@ public class RssService {
 
         RealmResults<RssSource> results = realm.where(RssSource.class).findAll();
         List<RssSource> sources = realm.copyFromRealm(results);
+
+        if(sources.size()==0) {
+            List<RssSource>feeds = RssFeedUrls.getDefaultFeeds();
+            for(int i = 0; i < feeds.size(); i++) {
+                realm.beginTransaction();
+                //Log.i("tag",""+feeds.get(i).getName());
+                realm.copyToRealm(feeds.get(i));
+                realm.commitTransaction();
+            }
+        }
+
         realm.close();
         return sources;
     }

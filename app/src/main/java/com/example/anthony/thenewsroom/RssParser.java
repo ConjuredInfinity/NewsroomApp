@@ -11,19 +11,14 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
-
-import io.realm.Realm;
-import io.realm.internal.Context;
 
 /**
  * Created by Anthony on 4/11/2017.
@@ -58,26 +53,31 @@ class RssParser {
                 xpp.setInput(url.openConnection().getInputStream(), "UTF_8");
 
                 boolean insideItem = false;
+                NewsItem item= new NewsItem();
 
                 int eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
-
                         if (xpp.getName().equalsIgnoreCase("item")) {
+                            item = new NewsItem();
                             insideItem = true;
                         } else if (xpp.getName().equalsIgnoreCase("title")) {
                             if (insideItem)
-                                headlines.add(xpp.nextText());
+                                item.setTitle(xpp.nextText());
+                                //headlines.add(xpp.nextText());
                         } else if (xpp.getName().equalsIgnoreCase("link")) {
                             if (insideItem)
-                                links.add(xpp.nextText());
+                                item.setLink(xpp.nextText());
+                                //links.add(xpp.nextText());
                         } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
                             if(insideItem)
-                                dates.add(formatter.parse(xpp.nextText()));
+                                item.setPubDate(formatter.parse(xpp.nextText()));
+                                //dates.add(formatter.parse(xpp.nextText()));
 
                         }
                     } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
                         insideItem = false;
+                        stories.add(item);
                     }
 
                     eventType = xpp.next();
@@ -86,11 +86,11 @@ class RssParser {
             } catch (XmlPullParserException | IOException | ParseException e) {
                 e.printStackTrace();
             }
-            Log.i("error boi", "ran " + headlines.size());
-            for (int j = 0; j < headlines.size(); j++) {
+            //Log.i("error boi", "ran " + headlines.size());
+            /*for (int j = 0; j < headlines.size(); j++) {
                 NewsItem item = new NewsItem(headlines.get(j), links.get(j), dates.get(j));
                 stories.add(item);
-            }
+            }*/
         }
         return stories;
     }
