@@ -45,4 +45,12 @@ public class RssSource extends RealmObject implements Serializable {
     public void setRssUrl(String rssUrl) {
         this.rssUrl = rssUrl;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass()))
+            return false;
+        RssSource source = (RssSource) obj;
+        return rssUrl.equals(source.rssUrl);
+    }
 }
