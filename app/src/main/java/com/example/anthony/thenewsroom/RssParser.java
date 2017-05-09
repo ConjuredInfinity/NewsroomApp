@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Created by Anthony on 4/11/2017.
@@ -34,7 +35,8 @@ class RssParser {
         List<NewsItem> stories = new ArrayList<>();
 
         DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.ENGLISH);
-
+        DateFormat ISOFormatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZ", Locale.ENGLISH);
+        ISOFormatter.setTimeZone(TimeZone.getTimeZone("GMT"));
 
 
         // the feeds to fetch
@@ -58,7 +60,7 @@ class RssParser {
                 int eventType = xpp.getEventType();
                 while (eventType != XmlPullParser.END_DOCUMENT) {
                     if (eventType == XmlPullParser.START_TAG) {
-                        if (xpp.getName().equalsIgnoreCase("item")) {
+                        if (xpp.getName().equalsIgnoreCase("item") || xpp.getName().equalsIgnoreCase("entry")) {
                             item = new NewsItem();
                             insideItem = true;
                         } else if (xpp.getName().equalsIgnoreCase("title")) {
@@ -66,16 +68,23 @@ class RssParser {
                                 item.setTitle(xpp.nextText());
                                 //headlines.add(xpp.nextText());
                         } else if (xpp.getName().equalsIgnoreCase("link")) {
-                            if (insideItem)
+                            if (insideItem && !xpp.isEmptyElementTag())
                                 item.setLink(xpp.nextText());
+                            else if (insideItem)
+                                item.setLink(xpp.getAttributeValue(0));
+
                                 //links.add(xpp.nextText());
-                        } else if (xpp.getName().equalsIgnoreCase("pubDate")) {
+                        } else if (xpp.getName().equalsIgnoreCase("pubDate") ) {
                             if(insideItem)
                                 item.setPubDate(formatter.parse(xpp.nextText()));
                                 //dates.add(formatter.parse(xpp.nextText()));
 
+                        } else if (xpp.getName().equals("updated")) {
+                            if(insideItem)
+                                item.setPubDate(ISOFormatter.parse(xpp.nextText()));
                         }
-                    } else if (eventType == XmlPullParser.END_TAG && xpp.getName().equalsIgnoreCase("item")) {
+
+                    } else if (eventType == XmlPullParser.END_TAG && (xpp.getName().equalsIgnoreCase("item") || xpp.getName().equalsIgnoreCase("entry"))) {
                         insideItem = false;
                         stories.add(item);
                     }

@@ -18,6 +18,7 @@
     <string-array name="add_entries">
         <item>Add URL</item>
         <item>Add Twitter</item>
+        <item>Subreddit</item>
         <item>Defaults</item>
     </string-array>
 </resources>

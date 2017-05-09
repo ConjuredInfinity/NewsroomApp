@@ -54,11 +54,19 @@ public class AddRssActivity extends SingleFragmentActivity {
                 RssType rssType;
 
                 // handle the manual adding fragments
-                if (position == 0 || position == 1) {
-                    if (position == 0) {
-                        rssType = RssType.URL;
-                    } else {
-                        rssType = RssType.TWITTER;
+                if (position < 3) {
+
+                    switch (position){
+                        case 0:
+                            rssType = RssType.URL;
+                            break;
+                        case 1:
+                            rssType = RssType.TWITTER;
+                            break;
+                        case 2:
+                            rssType = RssType.REDDIT;
+                            break;
+                        default:rssType = RssType.URL;
                     }
 
                     fragment = AddRssFragment.newInstance(rssType);

@@ -56,6 +56,9 @@ public class AddRssFragment extends Fragment {
         // configure the hint text
         if (rssType == RssType.TWITTER) {
             mTermTextView.setHint(getActivity().getResources().getString(R.string.twitter_term_placeholder));
+        } else if (rssType == RssType.REDDIT) {
+            mTermTextView.setHint("SubReddit");
+            mUrlTextView.setText("SubReddit");
         } else {
             mTermTextView.setHint(getActivity().getResources().getString(R.string.rss_term_placeholder));
             mUrlTextView.setText("URL:");
@@ -85,7 +88,7 @@ public class AddRssFragment extends Fragment {
                 String term = mTermTextView.getText().toString();
                 if (term.trim().isEmpty()) {
                     // term cannot be empty
-                    Toast.makeText(AddRssFragment.this.getContext(), "Name cannot be empty",
+                    Toast.makeText(AddRssFragment.this.getContext(), "Term cannot be empty",
                             Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -95,6 +98,8 @@ public class AddRssFragment extends Fragment {
                 String url;
                 if (rssType == RssType.TWITTER) {
                     url = "https://queryfeed.net/twitter?q=" + term + "&title-type=tweet-text-full&geocode=&omit-direct=on&omit-retweets=on&attach=on";
+                } else if(rssType == RssType.REDDIT) {
+                    url = "https://reddit.com/r/" + term + "/.rss";
                 } else {
                     url = term;
                 }
